@@ -1,0 +1,468 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-banner,
+.card,
+.status-bar {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.hero-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  gap: 24px;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(79, 70, 229, 0.18), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.16), transparent 30%),
+    var(--panel);
+}
+
+.hero-copy {
+  max-width: 680px;
+  font-size: 17px;
+  color: var(--muted);
+}
+
+.hero-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.metric {
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+}
+
+.metric span,
+.badge,
+.eyebrow,
+.module-card p,
+.recommendation-item p,
+.post-top p,
+.post-top span,
+.course-item p,
+.module-hint,
+.quiz-actions p,
+.profile-card p,
+.plan-box p {
+  color: var(--muted);
+}
+
+.metric strong,
+.course-item strong,
+.module-card strong,
+.achievement strong,
+.post-card strong,
+.recommendation-item strong,
+.profile-card h3,
+.course-detail h3,
+.quiz-panel h3,
+.plan-box h3 {
+  color: var(--text-h);
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  font-size: 14px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.card {
+  padding: 24px;
+}
+
+.auth-card,
+.path-card,
+.achievements-card {
+  grid-column: span 4;
+}
+
+.courses-card,
+.community-card {
+  grid-column: span 8;
+}
+
+.practice-card {
+  grid-column: span 7;
+}
+
+.community-card {
+  grid-column: span 5;
+}
+
+.section-head,
+.hero-actions,
+.profile-top,
+.module-card-top,
+.post-top,
+.quiz-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-head {
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  border: 1px solid transparent;
+  font-size: 13px;
+}
+
+.badge.subtle {
+  background: var(--panel-strong);
+}
+
+.badge.success {
+  background: rgba(34, 197, 94, 0.14);
+  color: #15803d;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+}
+
+.primary,
+.secondary,
+.ghost,
+.tab,
+.chip,
+.course-item,
+.module-card,
+.option,
+.vocab-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primary,
+.secondary,
+.ghost,
+.tab,
+.chip {
+  padding: 10px 16px;
+  border-radius: 14px;
+}
+
+.primary {
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+}
+
+.secondary {
+  color: var(--text-h);
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+}
+
+.ghost,
+.tab,
+.chip {
+  color: var(--text-h);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.primary:hover,
+.secondary:hover,
+.ghost:hover,
+.tab:hover,
+.chip:hover,
+.course-item:hover,
+.module-card:hover,
+.option:hover,
+.vocab-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent-soft);
+}
+
+.tab-group,
+.skill-picker,
+.option-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tab.active,
+.chip.active,
+.course-item.active,
+.module-card.active,
+.option.active {
+  border-color: var(--accent-soft);
+  background: rgba(79, 70, 229, 0.1);
+}
+
+.auth-form,
+.community-form,
+.plan-box,
+.profile-card,
+.course-detail,
+.quiz-panel,
+.speaking-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-form input,
+.auth-form select,
+.community-form input,
+.community-form select,
+.community-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  color: var(--text-h);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.community-form textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+.profile-card,
+.plan-box,
+.quiz-panel,
+.speaking-panel {
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+}
+
+.progress-strip {
+  display: grid;
+  gap: 8px;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4f46e5, #22c55e);
+}
+
+.mini-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mini-metrics div,
+.achievement,
+.post-card,
+.recommendation-item {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.mini-metrics strong {
+  display: block;
+  font-size: 24px;
+  color: var(--text-h);
+}
+
+.mini-metrics span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.course-list,
+.module-grid,
+.recommendation-list,
+.post-list,
+.achievement-grid,
+.vocab-list {
+  display: grid;
+  gap: 14px;
+}
+
+.course-item,
+.module-card,
+.option,
+.vocab-card {
+  width: 100%;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  color: inherit;
+  background: var(--surface);
+  text-align: left;
+}
+
+.course-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.module-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--text-h);
+  font-weight: 700;
+}
+
+.module-intro,
+.speech-text {
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.vocab-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.vocab-card {
+  min-height: 116px;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.quiz-panel h3 {
+  margin: 0;
+}
+
+.option-list {
+  display: grid;
+}
+
+.option {
+  text-align: left;
+}
+
+.recommendation-item,
+.post-card {
+  display: grid;
+  gap: 10px;
+}
+
+.achievement-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.achievement.unlocked {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.post-list {
+  max-height: 540px;
+  overflow: auto;
+}
+
+.post-top {
+  align-items: flex-start;
+}
+
+.post-card .ghost {
+  justify-self: start;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card,
+  .courses-card,
+  .practice-card,
+  .path-card,
+  .achievements-card,
+  .community-card {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-banner {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .status-bar,
+  .section-head,
+  .hero-actions,
+  .profile-top,
+  .module-card-top,
+  .post-top,
+  .quiz-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .module-grid,
+  .achievement-grid,
+  .vocab-list,
+  .mini-metrics {
+    grid-template-columns: 1fr;
+  }
+}
