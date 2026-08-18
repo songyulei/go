@@ -75,6 +75,10 @@ func UnmarshalFromString(str string, v interface{}) error {
 	data := []byte(str)
 	data = data[:lastNotSpacePos(data)]
 	iter := ParseBytes(data)
+	typ := reflect.TypeOf(v)
+	if typ.Kind() != reflect.Ptr {
+		return errors.New("the second param must be ptr type")
+	}
 	iter.ReadVal(v)
 	if iter.head == iter.tail {
 		iter.loadMore()
@@ -102,7 +106,7 @@ func UnmarshalAnyFromString(str string) (Any, error) {
 	if iter.Error == nil {
 		iter.reportError("UnmarshalAnyFromString", "there are bytes left after unmarshal")
 	}
-	return nil, iter.Error
+	return any, iter.Error
 }
 
 // Marshal adapts to json/encoding Marshal API
