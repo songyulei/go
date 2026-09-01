@@ -234,11 +234,18 @@ type dynamicMapKeyEncoder struct {
 
 func (encoder *dynamicMapKeyEncoder) Encode(ptr unsafe.Pointer, stream *Stream) {
 	obj := encoder.valType.UnsafeIndirect(ptr)
+	if reflect2.IsNil(obj) {
+		stream.Error = fmt.Errorf("unsupported type: nil, a nil map key can not be encoded")
+		return
+	}
 	encoderOfMapKey(encoder.ctx, reflect2.TypeOf(obj)).Encode(reflect2.PtrOf(obj), stream)
 }
 
 func (encoder *dynamicMapKeyEncoder) IsEmpty(ptr unsafe.Pointer) bool {
 	obj := encoder.valType.UnsafeIndirect(ptr)
+	if reflect2.IsNil(obj) {
+		return true
+	}
 	return encoderOfMapKey(encoder.ctx, reflect2.TypeOf(obj)).IsEmpty(reflect2.PtrOf(obj))
 }
 
