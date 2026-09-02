@@ -53,6 +53,21 @@ func Test_writeString_should_grow_buffer(t *testing.T) {
 	should.Equal(`"123"`, string(stream.Buffer()))
 }
 
+func Test_writeString_should_use_short_escapes(t *testing.T) {
+	should := require.New(t)
+	// \b (0x08) and \f (0x0c) must use the \b and \f short escapes,
+	// matching encoding/json output
+	stream := NewStream(ConfigDefault, nil, 0)
+	stream.WriteString("a\bb\fc")
+	should.Nil(stream.Error)
+	should.Equal(`"a\bb\fc"`, string(stream.Buffer()))
+
+	stream2 := NewStream(Config{EscapeHTML: true}.Froze(), nil, 0)
+	stream2.WriteStringWithHTMLEscaped("a\bb\fc")
+	should.Nil(stream2.Error)
+	should.Equal(`"a\bb\fc"`, string(stream2.Buffer()))
+}
+
 type NopWriter struct {
 	bufferSize int
 }
