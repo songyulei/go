@@ -259,8 +259,12 @@ func writeStringSlowPathWithHTMLEscaped(stream *Stream, i int, s string, valLen 
 				stream.writeTwoBytes('\\', 'r')
 			case '\t':
 				stream.writeTwoBytes('\\', 't')
+			case '\b':
+				stream.writeTwoBytes('\\', 'b')
+			case '\f':
+				stream.writeTwoBytes('\\', 'f')
 			default:
-				// This encodes bytes < 0x20 except for \t, \n and \r.
+				// This encodes bytes < 0x20 except for \t, \n, \r, \b and \f.
 				// If escapeHTML is set, it also escapes <, >, and &
 				// because they can lead to security holes when
 				// user-controlled strings are rendered into JSON
@@ -349,8 +353,12 @@ func writeStringSlowPath(stream *Stream, i int, s string, valLen int) {
 				stream.writeTwoBytes('\\', 'r')
 			case '\t':
 				stream.writeTwoBytes('\\', 't')
+			case '\b':
+				stream.writeTwoBytes('\\', 'b')
+			case '\f':
+				stream.writeTwoBytes('\\', 'f')
 			default:
-				// This encodes bytes < 0x20 except for \t, \n and \r.
+				// This encodes bytes < 0x20 except for \t, \n, \r, \b and \f.
 				// If escapeHTML is set, it also escapes <, >, and &
 				// because they can lead to security holes when
 				// user-controlled strings are rendered into JSON
