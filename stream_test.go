@@ -53,8 +53,35 @@ func Test_writeString_should_grow_buffer(t *testing.T) {
 	should.Equal(`"123"`, string(stream.Buffer()))
 }
 
+func Test_writeString_should_escape_backspace_and_formfeed(t *testing.T) {
+	should := require.New(t)
+	stream := NewStream(ConfigDefault, nil, 0)
+	stream.WriteString("a\bb\fc")
+	should.Nil(stream.Error)
+	should.Equal(`"a\bb\fc"`, string(stream.Buffer()))
+
+	stream = NewStream(ConfigDefault, nil, 0)
+	stream.WriteStringWithHTMLEscaped("a\bb\fc")
+	should.Nil(stream.Error)
+	should.Equal(`"a\bb\fc"`, string(stream.Buffer()))
+}
+
 type NopWriter struct {
 	bufferSize int
+}
+
+type textMarshalerStringKey string
+
+func (k textMarshalerStringKey) MarshalText() ([]byte, error) {
+	return []byte("MANUAL__" + string(k)), nil
+}
+
+func Test_encode_named_string_map_key_ignores_text_marshaler(t *testing.T) {
+	should := require.New(t)
+	m := map[textMarshalerStringKey]string{textMarshalerStringKey("abc"): "v"}
+	out, err := ConfigCompatibleWithStandardLibrary.Marshal(m)
+	should.Nil(err)
+	should.Equal(`{"abc":"v"}`, string(out))
 }
 
 func (w *NopWriter) Write(p []byte) (n int, err error) {
