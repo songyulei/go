@@ -106,6 +106,10 @@ func encoderOfMapKey(ctx *ctx, typ reflect2.Type) ValEncoder {
 		}
 	}
 
+	if typ.Kind() == reflect.String {
+		return encoderOfType(ctx, reflect2.DefaultTypeOfKind(reflect.String))
+	}
+
 	if typ == textMarshalerType {
 		return &directTextMarshalerEncoder{
 			stringEncoder: ctx.EncoderOf(reflect2.TypeOf("")),
@@ -119,8 +123,6 @@ func encoderOfMapKey(ctx *ctx, typ reflect2.Type) ValEncoder {
 	}
 
 	switch typ.Kind() {
-	case reflect.String:
-		return encoderOfType(ctx, reflect2.DefaultTypeOfKind(reflect.String))
 	case reflect.Bool,
 		reflect.Uint8, reflect.Int8,
 		reflect.Uint16, reflect.Int16,
