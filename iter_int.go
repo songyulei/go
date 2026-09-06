@@ -200,13 +200,10 @@ func (iter *Iterator) readUint32(c byte) (ret uint32) {
 				return value
 			}
 			if value > uint32SafeToMultiply10 {
-				value2 := (value << 3) + (value << 1) + uint32(ind)
-				if value2 < value {
+				if value > (^uint32(0)-uint32(ind))/10 {
 					iter.ReportError("readUint32", "overflow")
 					return
 				}
-				value = value2
-				continue
 			}
 			value = (value << 3) + (value << 1) + uint32(ind)
 		}
@@ -322,13 +319,10 @@ func (iter *Iterator) readUint64(c byte) (ret uint64) {
 				return value
 			}
 			if value > uint64SafeToMultiple10 {
-				value2 := (value << 3) + (value << 1) + uint64(ind)
-				if value2 < value {
+				if value > (^uint64(0)-uint64(ind))/10 {
 					iter.ReportError("readUint64", "overflow")
 					return
 				}
-				value = value2
-				continue
 			}
 			value = (value << 3) + (value << 1) + uint64(ind)
 		}

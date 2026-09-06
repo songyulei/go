@@ -115,7 +115,7 @@ func Test_read_int_overflow(t *testing.T) {
 		should.NotNil(iterUint.Error)
 	}
 
-	inputArr = []string{"3111111111", "-3111111111", "1234232323232323235678912", "-1234567892323232323212"}
+	inputArr = []string{"3111111111", "-3111111111", "4772185884", "-4772185884", "1234232323232323235678912", "-1234567892323232323212"}
 	for _, s := range inputArr {
 		iter := jsoniter.ParseString(jsoniter.ConfigDefault, s)
 		iter.ReadInt32()
@@ -126,7 +126,7 @@ func Test_read_int_overflow(t *testing.T) {
 		should.NotNil(iterUint.Error)
 	}
 
-	inputArr = []string{"9223372036854775811", "-9523372036854775807", "1234232323232323235678912", "-1234567892323232323212"}
+	inputArr = []string{"9223372036854775811", "-9523372036854775807", "20496382304121724021", "-20496382304121724021", "30000000000000000000", "1234232323232323235678912", "-1234567892323232323212"}
 	for _, s := range inputArr {
 		iter := jsoniter.ParseString(jsoniter.ConfigDefault, s)
 		iter.ReadInt64()
