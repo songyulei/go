@@ -141,6 +141,10 @@ func (codec *binaryAsStringCodec) Decode(ptr unsafe.Pointer, iter *jsoniter.Iter
 	for i := 0; i < len(rawBytes); i++ {
 		b := rawBytes[i]
 		if b == '\\' {
+			if i+4 >= len(rawBytes) {
+				iter.ReportError("decode binary as string", `\\x is only supported escape`)
+				return
+			}
 			b2 := rawBytes[i+1]
 			if b2 != '\\' {
 				iter.ReportError("decode binary as string", `\\x is only supported escape`)
@@ -195,16 +199,16 @@ var hex = "0123456789abcdef"
 func writeBytes(space []byte, s []byte) []byte {
 	space = append(space, '"')
 	// write string, the fast path, without utf8 and escape support
-	var i int
-	var c byte
-	for i, c = range s {
+	i := 0
+	for ; i < len(s); i++ {
+		c := s[i]
 		if c < utf8.RuneSelf && safeSet[c] {
 			space = append(space, c)
 		} else {
 			break
 		}
 	}
-	if i == len(s)-1 {
+	if i == len(s) {
 		space = append(space, '"')
 		return space
 	}
@@ -218,6 +222,9 @@ func writeBytesSlowPath(space []byte, s []byte) []byte {
 	var b byte
 	for i, b = range s {
 		if b >= utf8.RuneSelf {
+			if start < i {
+				space = append(space, s[start:i]...)
+			}
 			space = append(space, '\\', '\\', 'x', hex[b>>4], hex[b&0xF])
 			start = i + 1
 			continue
