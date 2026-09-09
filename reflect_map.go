@@ -106,6 +106,14 @@ func encoderOfMapKey(ctx *ctx, typ reflect2.Type) ValEncoder {
 		}
 	}
 
+	// encoding/json never consults encoding.TextMarshaler for map keys whose
+	// underlying kind is string: it always uses the raw string value. This
+	// must be checked before the TextMarshaler cases to stay compatible.
+	switch typ.Kind() {
+	case reflect.String:
+		return encoderOfType(ctx, reflect2.DefaultTypeOfKind(reflect.String))
+	}
+
 	if typ == textMarshalerType {
 		return &directTextMarshalerEncoder{
 			stringEncoder: ctx.EncoderOf(reflect2.TypeOf("")),
@@ -119,8 +127,6 @@ func encoderOfMapKey(ctx *ctx, typ reflect2.Type) ValEncoder {
 	}
 
 	switch typ.Kind() {
-	case reflect.String:
-		return encoderOfType(ctx, reflect2.DefaultTypeOfKind(reflect.String))
 	case reflect.Bool,
 		reflect.Uint8, reflect.Int8,
 		reflect.Uint16, reflect.Int16,
