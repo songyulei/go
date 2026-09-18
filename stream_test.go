@@ -1,6 +1,7 @@
 package jsoniter
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -51,6 +52,44 @@ func Test_writeString_should_grow_buffer(t *testing.T) {
 	stream.WriteString("123")
 	should.Nil(stream.Error)
 	should.Equal(`"123"`, string(stream.Buffer()))
+}
+
+func Test_writeString_should_use_short_escape_for_backspace_and_formfeed(t *testing.T) {
+	should := require.New(t)
+	for _, input := range []string{"\b", "\f"} {
+		stdBytes, err := json.Marshal(input)
+		should.NoError(err)
+		stream := NewStream(ConfigDefault, nil, 0)
+		stream.WriteString(input)
+		should.NoError(stream.Flush())
+		should.Equal(string(stdBytes), string(stream.Buffer()))
+	}
+
+	api := Config{EscapeHTML: true}.Froze()
+	for _, input := range []string{"\b", "\f"} {
+		stdBytes, err := json.Marshal(input)
+		should.NoError(err)
+		iterBytes, err := api.Marshal(input)
+		should.NoError(err)
+		should.Equal(string(stdBytes), string(iterBytes))
+	}
+}
+
+type stringMapKeyWithMarshalText string
+
+func (k stringMapKeyWithMarshalText) MarshalText() ([]byte, error) {
+	return []byte("MARSHALED:" + string(k)), nil
+}
+
+func Test_marshal_string_kind_map_key_ignores_text_marshaler(t *testing.T) {
+	should := require.New(t)
+	before := map[stringMapKeyWithMarshalText]string{"rawkey": "value"}
+	stdBytes, err := json.Marshal(before)
+	should.NoError(err)
+	iterBytes, err := ConfigCompatibleWithStandardLibrary.Marshal(before)
+	should.NoError(err)
+	should.Equal(string(stdBytes), string(iterBytes))
+	should.Equal(`{"rawkey":"value"}`, string(iterBytes))
 }
 
 type NopWriter struct {

@@ -1,6 +1,8 @@
 // +build go1.15
-// remove these tests temporarily until https://github.com/golang/go/issues/38105 and
-// https://github.com/golang/go/issues/38940 is fixed
+// Since Go 1.15, encoding/json ignores encoding.TextMarshaler for map keys
+// whose underlying type is a string (https://github.com/golang/go/issues/38940),
+// while encoding.TextUnmarshaler is still honored when decoding
+// (https://github.com/golang/go/issues/38105).
 
 package test
 
