@@ -53,6 +53,56 @@ func Test_writeString_should_grow_buffer(t *testing.T) {
 	should.Equal(`"123"`, string(stream.Buffer()))
 }
 
+func Test_writeString_should_match_stdlib(t *testing.T) {
+	cases := map[string]string{
+		"\b":                        `"\b"`,
+		"\f":                        `"\f"`,
+		"\n\r\t":                    `"\n\r\t"`,
+		"\x00":                      `"\u0000"`,
+		"\x1f":                      `"\u001f"`,
+		"\xff":                      `"\ufffd"`,
+		"\u2028":                    `"\u2028"`,
+		"\u2029":                    `"\u2029"`,
+		"a\bb" + "\xff" + "f\u2028": `"a\bb\ufffdf\u2028"`,
+	}
+	for input, expected := range cases {
+		stream := NewStream(ConfigDefault, nil, 0)
+		stream.WriteString(input)
+		require.Nil(t, stream.Error)
+		require.Equal(t, expected, string(stream.Buffer()), "input: %q", input)
+	}
+}
+
+func Test_writeStringWithHTMLEscaped_should_match_stdlib(t *testing.T) {
+	cases := map[string]string{
+		"\b":    `"\b"`,
+		"\f":    `"\f"`,
+		"<>&":   `"\u003c\u003e\u0026"`,
+		"a\bb<": `"a\bb\u003c"`,
+	}
+	for input, expected := range cases {
+		stream := NewStream(ConfigDefault, nil, 0)
+		stream.WriteStringWithHTMLEscaped(input)
+		require.Nil(t, stream.Error)
+		require.Equal(t, expected, string(stream.Buffer()), "input: %q", input)
+	}
+}
+
+func Test_namedStringMapKey_should_ignore_marshalText(t *testing.T) {
+	should := require.New(t)
+	output, err := Marshal(map[namedStringMapKey]string{
+		namedStringMapKey("abc"): "v1",
+	})
+	should.NoError(err)
+	should.Equal(`{"abc":"v1"}`, string(output))
+}
+
+type namedStringMapKey string
+
+func (k namedStringMapKey) MarshalText() ([]byte, error) {
+	return []byte("MANUAL__" + k), nil
+}
+
 type NopWriter struct {
 	bufferSize int
 }
